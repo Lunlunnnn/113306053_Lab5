@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>113306053_Lab5</title>
+  <style>
+    table {
+      width: 50%;
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 8px;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">Lab7</h1>
+  <div style="text-align: center;">
+    <input type="number" id="math" placeholder="Math Grade">
+    <input type="number" id="english" placeholder="English Grade">
+    <button onclick="addGrade()">Submit</button>
+  </div>
+  <table id="gradeTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Math</th>
+        <th>English</th>
+        <th>Average</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Average</td>
+        <td id="mathAverage">0.00</td>
+        <td id="englishAverage">0.00</td>
+        <td id="overallAverage">0.00</td>
+      </tr>
+    </tfoot>
+  </table>
+  <script>
+    let grades = [];
+    function addGrade() {
+      const mathInput = document.getElementById("math");
+      const englishInput = document.getElementById("english");
+
+      const math = parseFloat(mathInput.value);
+      const english = parseFloat(englishInput.value);
+
+      if (isNaN(math) || isNaN(english)) {
+        alert("Please enter valid numbers for Math and English grades.");
+        return;
+      }
+
+      const average = ((math + english) / 2).toFixed(2);
+      grades.push({ math, english, average: parseFloat(average) });
+
+      updateTable();
+      calculateAverages();
+
+      mathInput.value = "";
+      englishInput.value = "";
+    }
+
+    function updateTable() {
+      const tbody = document.querySelector("#gradeTable tbody");
+      tbody.innerHTML = "";
+
+      grades.forEach((grade, index) => {
+        const row = `<tr>
+          <td>${index + 1}</td>
+          <td>${grade.math.toFixed(2)}</td>
+          <td>${grade.english.toFixed(2)}</td>
+          <td>${grade.average.toFixed(2)}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function calculateAverages() {
+      let mathSum = 0, englishSum = 0, overallSum = 0;
+
+      grades.forEach(grade => {
+        mathSum += grade.math;
+        englishSum += grade.english;
+        overallSum += grade.average;
+      });
+
+      const mathAvg = grades.length ? (mathSum / grades.length).toFixed(2) : "0.00";
+      const englishAvg = grades.length ? (englishSum / grades.length).toFixed(2) : "0.00";
+      const overallAvg = grades.length ? (overallSum / grades.length).toFixed(2) : "0.00";
+
+      document.getElementById("mathAverage").textContent = mathAvg;
+      document.getElementById("englishAverage").textContent = englishAvg;
+      document.getElementById("overallAverage").textContent = overallAvg;
+    }
+  </script>
+</body>
+</html>
